@@ -1,0 +1,19 @@
+<div class="container mt-5 pt-3">
+  <h2>Edit Service Provider</h2>
+    <div *ngIf="successMessage" class="alert alert-success rounded-pill shadow-sm" role="alert" [innerHTML]="successMessage"></div>
+    <a routerLink="/service-providers" class="btn btn-primary mb-3">Go back to Service Providers</a>
+
+    <form (submit)="updateServiceProvider()">
+      <div class="form-group">
+        <label for="providerName">Provider Name</label>
+        <input type="text" class="form-control" id="providerName" [(ngModel)]="providerName" name="providerName" required>
+        <div *ngIf="!providerName && formSubmitted" class="text-danger">Provider name is required.</div>
+      </div>
+      <div class="form-group">
+        <label for="serviceNames">Service Names</label>
+        <input type="text" class="form-control" id="serviceNames" [(ngModel)]="serviceNames" name="serviceNames" required>
+        <div *ngIf="!serviceNames && formSubmitted" class="text-danger">Service names are required.</div>
+      </div>
+      <button type="submit" class="btn btn-success">Update Service Provider</button>
+    </form>
+  </div>

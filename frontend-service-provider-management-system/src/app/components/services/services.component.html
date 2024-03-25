@@ -1,0 +1,79 @@
+<div class="container mt-5 pt-3">
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="search()">Search</button>
+    </div>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="filterOptions" id="filterNone" value="allServices"
+      [(ngModel)]="selectedFilter" (change)="updateCurrentFilter()">
+    <label class="form-check-label" for="filterNone">Show all services</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="filterOptions" id="filterByProviders" value="providers"
+      [(ngModel)]="selectedFilter" (change)="updateCurrentFilter()">
+    <label class="form-check-label" for="filterByProviders">Filter by Providers</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="filterOptions" id="filterByServices" value="services"
+      [(ngModel)]="selectedFilter" (change)="updateCurrentFilter()">
+    <label class="form-check-label" for="filterByServices">Filter by Services</label>
+  </div>
+
+  <div>
+    <a class="btn btn-success mb-3 mt-3 me-3 align-top" href="/add-service" role="button">
+      <i class="bi bi-folder-plus"></i> Add New Service
+    </a>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="deleteSuccessMessage" class="alert alert-success rounded-pill shadow-sm" role="alert">
+    <span class="bi bi-check-circle-fill mr-2"></span>
+    {{ deleteSuccessMessage }}
+  </div>
+
+  <div *ngIf="serviceDTOs && serviceDTOs.length">
+    <div class="row">
+      <div *ngFor="let serviceDTO of serviceDTOs" class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="card-text"><strong>Service:</strong></div>
+            <p class="card-title">{{ serviceDTO.serviceDescription }}</p>
+            <div class="card-text"><strong>Providers:</strong></div>
+            <ul class="list-group">
+              <li *ngFor="let provider of serviceDTO.serviceProviders" class="list-group-item">{{ provider }}</li>
+            </ul>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-danger rounded-circle shadow mr-2"
+              (click)="deleteService(serviceDTO.id, serviceDTO.serviceDescription)">
+              <span class="bi bi-trash-fill"></span>
+            </button>
+            <a class="btn btn-warning rounded-circle shadow" [routerLink]="['/edit-service', serviceDTO.id]">
+              <span class="bi bi-pencil-fill"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav aria-label="Page navigation" fixed-bottom justify-content-center>
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="!hasPreviousPage()">
+        <button class="page-link" (click)="previousPage()">Previous</button>
+      </li>
+      <li class="page-item" *ngFor="let page of generatePageArray(totalPages)" [class.active]="page === currentPage">
+        <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="!hasNextPage()">
+        <button class="page-link" (click)="nextPage()">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>
